@@ -8,6 +8,8 @@ import (
 )
 
 type CompareResult struct {
+	ID         string  `json:"id"`
+	Name       string  `json:"name"`
 	PropMatch  float64 `json:"propMatch"`
 	Confidence float64 `json:"confidence"`
 	Dist       float64 `json:"dist"`
@@ -51,7 +53,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		Results: []*CompareResult{},
 	}
 
-	for _, user := range nd.users {
+	for id, user := range nd.users {
 		confidence := dyn.ProportionSharedProperties(user.avgDyn, keyize.Both)
 
 		propMatch := dyn.ProportionMatch(user.avgDyn)
@@ -59,6 +61,8 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		dist := dyn.AvgScaledPropDiff(user.avgDyn, nil)
 
 		res.Results = append(res.Results, &CompareResult{
+			ID:         id,
+			Name:       user.name,
 			PropMatch:  propMatch,
 			Confidence: confidence,
 			Dist:       dist,

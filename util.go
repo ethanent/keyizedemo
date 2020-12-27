@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"io"
 	"io/ioutil"
@@ -20,4 +22,14 @@ func unmarshalJSON(r *http.Request, d interface{}) error {
 	}
 
 	return json.Unmarshal(all, d)
+}
+
+func genID() (string, error) {
+	d := make([]byte, 16)
+
+	if _, err := rand.Read(d); err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(d), nil
 }

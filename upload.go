@@ -50,16 +50,23 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	if _, ok := data[r.RemoteAddr]; ok == false {
 		data[r.RemoteAddr] = &NetworkData{
-			users: []*UserData{},
+			users: map[string]*UserData{},
 		}
+	}
+
+	id, err := genID()
+
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
 	nd := data[r.RemoteAddr]
 
-	nd.users = append(nd.users, &UserData{
+	nd.users[id] = &UserData{
 		name:   d.Name,
 		avgDyn: avgDynamics,
-	})
+	}
 
 	fmt.Println("Added user for", r.RemoteAddr, ":", d.Name)
 

@@ -12,7 +12,7 @@ type UserData struct {
 }
 
 type NetworkData struct {
-	users []*UserData
+	users map[string]*UserData
 }
 
 var data = map[string]*NetworkData{}
