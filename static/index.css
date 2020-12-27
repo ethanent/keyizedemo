@@ -1,0 +1,14 @@
+#regta, #searchta {
+	overflow: hidden;
+	font-size: 20px;
+	width: 800px;
+	height: 100px;
+}
+
+td, table {
+	border: 1px solid #222222;
+}
+
+button {
+	display: block;
+}

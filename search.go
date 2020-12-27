@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/KeyizeBiometry/keyize"
+	"math"
 	"net/http"
 )
 
@@ -59,6 +60,21 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		propMatch := dyn.ProportionMatch(user.avgDyn)
 
 		dist := dyn.AvgScaledPropDiff(user.avgDyn, nil)
+
+		if math.IsNaN(propMatch) {
+			fmt.Println("propMatch NaN")
+			propMatch = -2
+		}
+
+		if math.IsNaN(dist) {
+			fmt.Println("dist NaN")
+			dist = -2
+		}
+
+		if math.IsNaN(confidence) {
+			fmt.Println("confidence NaN")
+			confidence = -2
+		}
 
 		res.Results = append(res.Results, &CompareResult{
 			ID:         id,

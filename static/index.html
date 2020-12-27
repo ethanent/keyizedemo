@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Keyize Demo</title>
+
+	<link rel="stylesheet" href="index.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12" crossorigin="anonymous"
+			integrity="sha384-cwVe6U8Tq7F/3JIj6xeDzOwuqeChcmRcdYqDGfoYmdAurw7L3f4dFHhEJKfxv96A"></script>
+
+	<script src="keyize_rec.js" defer></script>
+	<script src="index.js" defer></script>
+</head>
+<body>
+<div id="app">
+	<template v-if=" state == 'main' ">
+		<h1>Keyize Demo Utility</h1>
+		<p><a href="#" @click=" state = 'register'; resetRec() ">Register ></a></p>
+		<p><a href="#" @click=" state = 'search'; resetRec() ">Search ></a></p>
+	</template>
+
+	<template v-if=" state == 'getName' ">
+		<h2>Prepare for Upload</h2>
+
+		<p>Please provide a name to identify the user</p>
+
+		<input type="text" v-model="name"/>
+
+		<a href="#" @click="submitName">Continue ></a>
+	</template>
+
+	<template v-if=" state == 'doneUpload' ">
+		<h2>Upload Complete</h2>
+		<p>The user has been saved and may now be searched.</p>
+
+		<a href="#" @click=" state = 'main' ">Continue ></a>
+	</template>
+
+	<template v-if=" state == 'doneSearch' ">
+		<h2>Search Complete</h2>
+
+		<p>Best match: <b>{{bestMatchName}}</b></p>
+
+		<table>
+			<tr>
+				<td>ID</td>
+				<td>Name</td>
+				<td>% Match</td>
+				<td>% Confidence</td>
+				<td>Distance</td>
+			</tr>
+
+			<template v-for="r in searchRes">
+				<tr>
+					<td>{{r.id}}</td>
+					<td>{{r.name}}</td>
+					<td>{{Math.round(100*r.propMatch)}}</td>
+					<td>{{Math.round(100*r.confidence)}}</td>
+					<td>{{r.dist}}</td>
+				</tr>
+			</template>
+		</table>
+
+		<a href="#" @click=" state = 'main' ">Continue ></a>
+	</template>
+
+	<template v-if=" state == 'loading' ">
+		<h2>Loading...</h2>
+	</template>
+</div>
+
+<div id="searchdiv" style="display:none;">
+	<h2>Search</h2>
+
+	<p>Type the phrase or something similar: <b>The captain walked to the back of the ship to investigate the water
+			source. There he found the source of the leak, a starboard crater.</b></p>
+
+	<textarea id="searchta"></textarea>
+
+	<button onclick="app.submitSearch()">Search</button>
+</div>
+
+<div id="registerdiv" style="display:none;">
+	<h2>Register</h2>
+
+	<p>Type the phrase or something similar: <b>The captain walked to the back of the ship to investigate the water
+			source. There he found the source of the leak, a starboard crater.</b></p>
+	<p>You will need to do this about 3 times.</p>
+
+	<textarea id="regta"></textarea>
+
+	<button onclick="app.next()">Next</button>
+</div>
+
+<footer>
+	<p>&copy; 2020 Ethan L. Davis</p>
+</footer>
+</body>
+</html>
