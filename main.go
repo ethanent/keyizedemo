@@ -25,6 +25,9 @@ func main() {
 	s.HandleFunc("/upload", uploadHandler)
 	s.HandleFunc("/search", searchHandler)
 
+	s.HandleFunc("/listUsers", listUsersHandler)
+	s.HandleFunc("/removeUsers", removeUsersHandler)
+
 	fmt.Println("Listening...")
 
 	if err := http.ListenAndServe(":80", s); err != nil {

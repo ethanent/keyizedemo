@@ -17,6 +17,7 @@
 		<h1>Keyize Demo Utility</h1>
 		<p><a href="#" @click=" state = 'register'; resetRec() ">Register ></a></p>
 		<p><a href="#" @click=" state = 'search'; resetRec() ">Search ></a></p>
+		<p><a href="#" @click=" state = 'loading'; prepareReset() ">Manage ></a></p>
 	</template>
 
 	<template v-if=" state == 'getName' ">
@@ -29,9 +30,39 @@
 		<a href="#" @click="submitName">Continue ></a>
 	</template>
 
+	<template v-if=" state == 'reset' ">
+		<h2>Reset</h2>
+		<p>Select the users you would like to delete.</p>
+
+		<table>
+			<tr>
+				<td>Delete?</td>
+				<td>Name</td>
+				<td>ID</td>
+			</tr>
+
+			<template v-for="r in resetUsers">
+				<tr>
+					<td><input type="checkbox" v-model="r.toDelete"/></td>
+					<td>{{r.name}}</td>
+					<td>{{r.id}}</td>
+				</tr>
+			</template>
+		</table>
+
+		<a href="#" @click=" performDelete() ">Continue ></a>
+	</template>
+
 	<template v-if=" state == 'doneUpload' ">
 		<h2>Upload Complete</h2>
 		<p>The user has been saved and may now be searched.</p>
+
+		<a href="#" @click=" state = 'main' ">Continue ></a>
+	</template>
+
+	<template v-if=" state == 'doneDelete' ">
+		<h2>Delete Complete</h2>
+		<p>Selected user(s) have been deleted.</p>
 
 		<a href="#" @click=" state = 'main' ">Continue ></a>
 	</template>

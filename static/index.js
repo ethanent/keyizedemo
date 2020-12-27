@@ -13,6 +13,12 @@ const app = new Vue({
 		"state": "main",
 		"name": "",
 		"bestMatchName": "",
+		"resetUsers": [
+			{
+				"id": "",
+				"name": ""
+			}
+		],
 		"searchRes": [
 			{
 				"id": "",
@@ -110,6 +116,53 @@ const app = new Vue({
 				// Done
 
 				this.state = "doneSearch"
+			} else {
+				this.state = "main"
+				alert("Error: " + await res.text())
+			}
+		},
+		"prepareReset": async function () {
+			const res = await fetch(window.location.protocol + "//" + window.location.host + "/listUsers", {
+				"method": "GET"
+			})
+
+			if (res.status !== 200) {
+				this.state = "main"
+				alert("Error: " + await res.text())
+				return
+			}
+
+			this.resetUsers.splice(0, this.resetUsers.length)
+
+			const parsed = await res.json()
+
+			parsed.forEach((r) => {
+				this.resetUsers.push({
+					"id": r.id,
+					"name": r.name,
+					"toDelete": false
+				})
+			})
+
+			console.log(this.resetUsers)
+
+			this.state = "reset"
+		},
+		"performDelete": async function () {
+			const deleteIDs = this.resetUsers.filter((u) => u.toDelete).map((u) => u.id)
+
+			if (deleteIDs.length === 0) {
+				this.state = "main"
+				return
+			}
+
+			const res = await fetch(window.location.protocol + "//" + window.location.host + "/removeUsers", {
+				"method": "POST",
+				"body": JSON.stringify(deleteIDs)
+			})
+
+			if (res.status === 201) {
+				this.state = "doneDelete"
 			} else {
 				this.state = "main"
 				alert("Error: " + await res.text())
