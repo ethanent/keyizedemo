@@ -23,6 +23,7 @@ func main() {
 	s.Handle("/", http.FileServer(http.Dir("./static")))
 
 	s.HandleFunc("/upload", uploadHandler)
+	s.HandleFunc("/search", searchHandler)
 
 	fmt.Println("Listening...")
 
