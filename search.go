@@ -39,7 +39,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Get network
 
-	nd, ok := data[r.RemoteAddr]
+	nd, ok := data[getIP(r.RemoteAddr)]
 
 	if ok == false {
 		http.Error(w, "No recordings have been uploaded yet.", http.StatusNotFound)

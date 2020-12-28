@@ -7,6 +7,8 @@ import (
 )
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+	ip := getIP(r.RemoteAddr)
+
 	d := &struct {
 		Name         string   `json:"name"`
 		V1Recordings []string `json:"recs"`
@@ -48,8 +50,8 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Insert data
 
-	if _, ok := data[r.RemoteAddr]; ok == false {
-		data[r.RemoteAddr] = &NetworkData{
+	if _, ok := data[ip]; ok == false {
+		data[ip] = &NetworkData{
 			users: map[string]*UserData{},
 		}
 	}
@@ -61,14 +63,14 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	nd := data[r.RemoteAddr]
+	nd := data[ip]
 
 	nd.users[id] = &UserData{
 		name:   d.Name,
 		avgDyn: avgDynamics,
 	}
 
-	fmt.Println("Added user for", r.RemoteAddr, ":", d.Name)
+	fmt.Println("Added user for", ip, ":", d.Name)
 
 	// Reply
 

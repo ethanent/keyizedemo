@@ -12,7 +12,7 @@ type UserInfo struct {
 }
 
 func listUsersHandler(w http.ResponseWriter, r *http.Request) {
-	d, ok := data[r.RemoteAddr]
+	d, ok := data[getIP(r.RemoteAddr)]
 
 	if !ok {
 		http.Error(w, "No recordings have been uploaded yet.", http.StatusNotFound)
@@ -40,7 +40,7 @@ func listUsersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func removeUsersHandler(w http.ResponseWriter, r *http.Request) {
-	d, ok := data[r.RemoteAddr]
+	d, ok := data[getIP(r.RemoteAddr)]
 
 	if !ok {
 		http.Error(w, "No recordings have been uploaded yet.", http.StatusNotFound)

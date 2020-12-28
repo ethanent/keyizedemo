@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 func unmarshalJSON(r *http.Request, d interface{}) error {
@@ -32,4 +33,9 @@ func genID() (string, error) {
 	}
 
 	return hex.EncodeToString(d), nil
+}
+
+func getIP(addr string) string {
+	ip := strings.Split(addr, ":")[0]
+	return ip
 }

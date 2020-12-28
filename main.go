@@ -28,6 +28,11 @@ func main() {
 	s.HandleFunc("/listUsers", listUsersHandler)
 	s.HandleFunc("/removeUsers", removeUsersHandler)
 
+	s.HandleFunc("/ip", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(getIP(r.RemoteAddr)))
+	})
+
 	fmt.Println("Listening...")
 
 	if err := http.ListenAndServe(":80", s); err != nil {
